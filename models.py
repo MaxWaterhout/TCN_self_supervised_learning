@@ -100,38 +100,38 @@ class TCNmodel(nn.Module):
 
         return x
 
-# #testing model
-# model = TCNmodel()
+class Baselinemodel(nn.Module):
+  # input tensor: N x 3 x H(>=299) x W(>=299) 
+  # output tensor: N x 32
 
-# import urllib
-# url, filename = ("https://github.com/pytorch/hub/raw/master/images/dog.jpg", "dog.jpg")
-# try: urllib.URLopener().retrieve(url, filename)
-# except: urllib.request.urlretrieve(url, filename)
 
-# # sample execution (requires torchvision)
-# from PIL import Image
-# from torchvision import transforms
-# input_image = Image.open(filename)
-# preprocess = transforms.Compose([
-#     transforms.Resize([360,640]),
-#     #transforms.CenterCrop(299),
-#     transforms.ToTensor(),
-#     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-# ])
-# print(input_image.size)
+    def __init__(self):
+        super(Baselinemodel, self).__init__()
+        self.model = torch.hub.load('pytorch/vision:v0.10.0', 'inception_v3', pretrained=True)
 
-# input_tensor = preprocess(input_image)
-# input_batch = input_tensor.unsqueeze(0) # create a mini-batch as expected by the model
-# print(input_batch.shape)
-# input_batch=torch.cat(10*[input_batch])
-# print(input_batch.shape)
-# #input_batch = torch.cat((input_batch,input_batch),dim=0)
-# # move the input and model to GPU for speed if available
-# if torch.cuda.is_available():
-#     input_batch = input_batch.to('cuda')
-#     model.to('cuda')
+    def forward(self, x):
+        x = self.model.Conv2d_1a_3x3(x)
+        x = self.model.Conv2d_2a_3x3(x)
+        x = self.model.Conv2d_2b_3x3(x)
+        x = self.model.maxpool1(x)
 
-# with torch.no_grad():
-#   output = model(input_batch)
-# # Tensor of shape 1000, with confidence scores over Imagenet's 1000 classes
-# print(output.shape)
+        x = self.model.Conv2d_3b_1x1(x)
+        x = self.model.Conv2d_4a_3x3(x)
+        x = self.model.maxpool2(x)
+        x = self.model.Mixed_5b(x)
+        x = self.model.Mixed_5c(x)
+        x = self.model.Mixed_5d(x)
+        x = self.model.Mixed_6a(x)
+        x = self.model.Mixed_6b(x)
+        x = self.model.Mixed_6c(x)
+        x = self.model.Mixed_6d(x)
+        x = self.model.Mixed_6e(x)
+        x = self.model.Mixed_7a(x)
+        x = self.model.Mixed_7b(x)
+        x = self.model.Mixed_7c(x)
+        x = self.model.avgpool(x)
+        x = self.model.dropout(x)
+        x = torch.flatten(x, 1)
+
+        
+        return x
