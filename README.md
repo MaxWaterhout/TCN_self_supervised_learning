@@ -36,6 +36,7 @@ and the limitations encountered during this project.
 ## 3. Results
 
 ### 3.1 Final result overview
+Because there is no validation set to select the best training epoch, we only save the model for every 200 epochs and the models with the new minimum loss. We trained the model for 13k iterations and the training loss is shown in Figure 1.  The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
 <!--
 Training loss (Triplelet loss)
 <p align="center">
@@ -49,6 +50,7 @@ Testing set Accuracy
 <img src="images/accuracy.png" width="750" height="261" alt="Figure 1 paper">
 </p>
 Figure 2 -->
+The best accuracy measured by video alignemt using l2 distance with one frame tolerence is at the 7200 iteration. The average alignment accuracy for testing set is 80.11 percent whereas for the Baseline method, the average accuracy is 71.04 percent. 
 
 
 ### 3.2 Reproduced figure/ table
