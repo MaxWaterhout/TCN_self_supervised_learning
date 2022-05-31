@@ -1,22 +1,15 @@
 # Reproducing *Time-Contrastive Networks: Self-Supervised Learning from Video*
 **Authors:** Max Waterhout (5384907), Amos Yususf (4361504), Tingyu Zhang ()
 ***
-
-## 1. Introduction
 In this blog post, we present the results of our attempted replication and study of the 2018 paper by Pierre Sermanet et al. 
 *Time-Contrastive Networks: Self-Supervised Learning from Video* [[1]](#1). This work is part of the CS4245 Seminar Computer Vision
-by Deep Learning course 2021/2022 at TU Delft. 
+by Deep Learning course 2021/2022 at TU Delft. This whole reproduction is done from scratch and can be found in our github: https://github.com/maxiew123/TCN_self_supervised_learning/tree/main
 
 ***
-<!--
-This is the syntax for a figure we still need an images folder, but this is just an outline
-<p align="center">
-<img src="images/figure_1_paper.png" width="750" height="261" alt="Figure 1 paper">
-</p>
-Figure 1 -->
-
 ***
-In the computer vision domain, deep neural networks have been succesfull on a big range of tasks where labels can be easily be specified by humans, like object detection/segmentation. A bigger challenge lies in applications that are difficult to label, like in the robotics domain. An example would be labeling a pouring task. How can a robot understand what important properties are while neglecting setting changes. Ideally, a robot in the real world can learn a pouring task purely from observation and understanding how to imitate this behaviour directly. In this reproduction we train a network on a pouring task that tries to learn the important features like pose and the amount of liquid in the cup while being viewpoint and setting invariant. This pouring task is learned through the use of supervised learning and representation learning. In the following we will provide an motivation for this paper, our implementation of the model using PyTorch, the results that we achieved against the benchmarks and lastly we discuss the limitations from our implementation. 
+
+## 1. Introduction
+In the computer vision domain, deep neural networks have been successful on a big range of tasks where labels can easily be specified by humans, like object detection and segmentation. A bigger challenge lies in applications that are difficult to label, like in the robotics domain. An example would be labeling a pouring task. How can a robot understand what important properties are while neglecting setting changes? Ideally, a robot in the real world can learn a pouring task purely from observation and understanding how to imitate this behavior directly. In this reproduction, we train a network on a pouring task that tries to learn the important features like the pose and the amount of liquid in the cup while being viewpoint and setting invariant. This pouring task is learned through the use of supervised learning and representation learning. In the following, we will provide a motivation for this paper, our implementation of the model, the results that we achieved against the benchmarks and lastly we discuss the limitations of our implementation. 
 
 <p align="center">
 <img src="images/pouring_002.gif" width="500" height="300"/> </br>
@@ -25,21 +18,20 @@ In the computer vision domain, deep neural networks have been succesfull on a bi
 
 
 ## 2. Motivation
-Imitation learning has already been used for learning robotic skills from demonstrations and can be split in two areas: behavioral cloning and inverse reinforcement learning. The main disadvantage of these methods is the need of a demonstration in the same context as the learner. This does not scale well with different contexts, like a changing viewpoint or an agent with a different model. In this paper the authors train a Time-Constrastive Network (TCN) on demonstrations that are diverse in embodiments, objects and backgrounds. This allows the TCN to learn the best pouring representation without labels. With this TCN network a robot can learn to link the images to the corresponding motor commands using reinforcement learning or an other method. In our blog we do not cover the reinforcement part.
+Imitation learning has already been used for learning robotic skills from demonstrations [[2]](#2) and can be split into two areas: behavioral cloning and inverse reinforcement learning. The main disadvantage of these methods is the need for a demonstration in the same context as the learner. This does not scale well with different contexts, like a changing viewpoint or an agent with a different model. In this paper, a Time-Contrastive Network (TCN) is trained on demonstrations that are diverse in embodiments, objects and backgrounds. This allows the TCN to learn the best pouring representation without labels. Eventually with this representation a robot can use this as a reward function. The robot can learn to link its images to the corresponding motor commands using reinforcement learning or another method. In our blog, we do not cover the reinforcement learning part.
 
 
-## 2. Implementation
-
-For our implementation of the TCN we only use the data of the single-view data. 
+## 3. Implementation
+For our implementation of the TCN we only use the data of the single-view data. The input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (40 frames) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [1].  
 
 <p align="center">
 <img src="images/single view TCN.png" width="360" height="261" alt="single view TCN"> </br>
 <em>Fig. 1: The single-view TCN</em>
 </p>
 
-### 2.1 Framework
-The framework of a TCN contains of a deep network that outputs an 32-dimensional embedding vector, see fig [1]. As an input, a sequence of preprocessed 360x640 frames of a video are putted in. In total 11 sequences of around 5 seconds (40 frames) are used for training. For every frame in a sequence, The TCN takes an anchor, positive and negative frame where it encourages the anchor and positive to be close in embedding space while distancing itself from the negative frame. This way the network learns what is common between the anchor and positive frame and different from the negative frame. In our case the negative margin range is 0.2 second (one frame). \
-The actual loss is calculated with a triplet loss [[2]](#2). The formula and an illustration can be seen in fig [2]. 
+### 3.1 Training
+The loss is calculated with a triplet loss [[3]](#3). The formula and an illustration can be seen in fig [2]. This loss is calculated with an anchor, positive and negative frame. For every frame in a sequence, The TCN encourages the anchor and positive to be close in embedding space while distancing itself from the negative frame. This way the network learns what is common between the anchor and positive frame and different from the negative frame. In our case the negative margin range is 0.2 seconds (one frame) and negatives always come from the same sequence as the positive. \
+
 
 <p align="center">
 <img src="images/triplet loss formula.png" width="700" height="105" alt="Training loss"> </br>
@@ -50,11 +42,10 @@ The actual loss is calculated with a triplet loss [[2]](#2). The formula and an 
 <em>Fig. 2: The triplet loss</em>
 </p>
 
-The main purpose of the triplet loss is to learn representations without labels and simultaneously learn meaningful features like pose for example. \ 
-The deep network that is used for feature extraction is derived from the Inception architecture.  
+The main purpose of the triplet loss is to learn representations without labels and simultaneously learn meaningful features like pose while being invariant to viewpoint,scale occlusion, background etc.. \ 
 
-### 2.2 Hyperparameter selection 
-
+## 3.2 Deep network
+The deep network is used for feature extraction. This framework is derived from an Inception architecture initialized with ImageNet pre-trained weights. The architecture is up until the "Mixed-5D" layer followed by two 2 convolutional layers, a spatial softmax layer and a fully connected layer. 
 
 ## 3. Results
 
@@ -93,7 +84,10 @@ https://user-images.githubusercontent.com/99979529/170977368-6cdf319a-a28d-48c2-
 ### 4.2 Limitations
 
 ## References
-<a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]()
+<a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]() \
+<a id="2">[2] </a> J.A. Ijspeert, J. Nakanishi, and S. Schaal. Movement imitation
+with nonlinear dynamical systems in humanoid robots. In
+ICRA, 2002.
 
 
 
