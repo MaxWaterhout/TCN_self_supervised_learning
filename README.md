@@ -34,7 +34,7 @@ The loss is calculated with a triplet loss [[3]](#3). The formula and an illustr
 
 
 <p align="center">
-<img src="images/triplet loss formula.png" width="700" height="105" alt="Training loss"> </br>
+<img src="images/triplet loss formula.png" width="700" height="105" > </br>
 </p>
 
 <p align="center">
@@ -53,20 +53,32 @@ The deep network is used for feature extraction. This framework is derived from 
 Because there is no validation set to select the best training model, we only save models for every 200 epochs and the models reaching the new minimum loss. We trained the model for 13k iterations and the training loss is shown in Figure 1.  The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
 
 <p align="center">
-<img src="images/tain loss.png" width="360" height="261" alt="Training loss">
+<img src="images/tain loss.png" width="360" height="261" alt="Training loss"> </br>
+<em>Fig. 3: The training loss</em>
 </p>
 
 
 
 <p align="center">
-<img src="./images/accuracy.png" width="360" height="261" alt="Figure 1 paper">
+<img src="./images/accuracy.png" width="360" height="261" alt="Figure 1 paper"> </br>
+<em>Fig. 4: The testing accuracy</em>
 </p>
 
 The best accuracy measured by the video alignemt using l2 distance with one frame tolerence is at the 7200 iteration. The average alignment accuracy for testing set is 80.11 percent whereas the Baseline method has an average accuracy of 71.04 percent. 
 
+<p align="center">
+<img src="./images/everything.gif" width="360" height="261"> </br>
+<em>Fig. 5: Overview</em>
+</p>
 
 
-https://user-images.githubusercontent.com/99979529/170977368-6cdf319a-a28d-48c2-abbc-d9de61e404f8.mp4
+
+https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-82c8-dca6ab182bcd.mp4
+
+
+
+
+
 
 
 
