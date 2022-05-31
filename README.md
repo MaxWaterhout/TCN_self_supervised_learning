@@ -48,6 +48,8 @@ The main purpose of the triplet loss is to learn representations without labels 
 The deep network is used for feature extraction. This framework is derived from an Inception architecture initialized with ImageNet pre-trained weights. The architecture is up until the "Mixed-5D" layer followed by two 2 convolutional layers, a spatial softmax layer and a fully connected layer. 
 
 ## 3. Results
+For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. /
+We compare our results against the baseline of
 
 ### 3.1 Final result overview
 Because there is no validation set to select the best training model, we only save models for every 200 epochs and the models reaching the new minimum loss. We trained the model for 13k iterations and the training loss is shown in Figure 1.  The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
