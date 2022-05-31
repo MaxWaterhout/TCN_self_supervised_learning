@@ -50,7 +50,7 @@ The deep network is used for feature extraction. This framework is derived from 
 ## 3. Results
 
 ### 3.1 Final result overview
-Because there is no validation set to select the best training model, we only save models for every 200 epochs and the models reaching the new minimum loss. We trained the model for 13k iterations and the training loss is shown in Figure 1.  The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
+Model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training epochs. Between 1 to 800 epochs, the optimizer was the SGD and between 800 to 4200 epochs, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 epochs, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos (fake pouring videos were not used). Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 epochs and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Figure 1. The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
 
 <p align="center">
 <img src="images/tain loss.png" width="360" height="261" alt="Training loss"> </br>
@@ -63,8 +63,8 @@ Because there is no validation set to select the best training model, we only sa
 <img src="./images/accuracy.png" width="360" height="261" alt="Figure 1 paper"> </br>
 <em>Fig. 4: The testing accuracy</em>
 </p>
-
-The best accuracy measured by the video alignemt using l2 distance with one frame tolerence is at the 7200 iteration. The average alignment accuracy for testing set is 80.11 percent whereas the Baseline method has an average accuracy of 71.04 percent. 
+Tthe alignment accuracy from each saved network model for the testing set is ploted in figure 2. Various criterion were used to measure the similarity between two embedded frames, such as consine similarity and euclidean distance (l2). We paid more focus on the l2 distance with one frame tolerence because this setup is closely related to the training procedure.  
+The best accuracy measured by that criteria is from the model at the 7200th iteration. The average alignment accuracy is 80.11 percent whereas the Baseline method has an average accuracy of 71.04 percent. 
 
 <p align="center">
 <img src="./images/everything.gif" width="360" height="261"> </br>
