@@ -95,7 +95,11 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 ## 4. Discussion and Limitations
 
 ### 4.1 Discussion
+
 ### 4.2 Limitations
+In our implementation the main limitation is computing power, the authors of this paper performed in the region of 200k-300k iterations, whereas for this reproducibility project we were only capable of 13K iterations. In addition this was performe on the Google Cloud Platform, but running the identical number of iterations was infeasible. 
+The exact preprocessing steps performed by the authors were not specified in the paper. We assumed the same preprocessing steps from the Inceptionnet (i.e: Normalization). The input dimensions were acquired from the README in the repository provided by the authors repository, this causes a wild goose chase and many errors in implementation. 
+
 
 ## References
 <a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]() \
