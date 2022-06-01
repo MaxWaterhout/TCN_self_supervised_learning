@@ -47,6 +47,7 @@ The main purpose of the triplet loss is to learn representations without labels 
 
 ## 3.2 Deep network
 The deep network is used for feature extraction. This framework is derived from an Inception architecture initialized with ImageNet pre-trained weights. The architecture is up until the "Mixed-5D" layer followed by two 2 convolutional layers, a spatial softmax layer and a fully connected layer. 
+1. how we implement from the reference paper about these two conv blocks.
 
 ## 4. Results
 For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. /
@@ -121,9 +122,9 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 <a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]() \
 <a id="2">[2] </a> J.A. Ijspeert, J. Nakanishi, and S. Schaal. Movement imitation
 with nonlinear dynamical systems in humanoid robots. In
-ICRA, 2002.
+ICRA, 2002.\
 <a id="3">[3] </a> X. Wang and A. Gupta. Unsupervised learning of visual
-representations using videos. CoRR, abs/1505.00687, 2015.
+representations using videos. CoRR, abs/1505.00687, 2015.\
 <a id="4">[4] </a> J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei. ImageNet: A Large-Scale Hierarchical Image Database. In
 CVPR, 2009.
 
