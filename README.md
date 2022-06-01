@@ -47,11 +47,11 @@ The main purpose of the triplet loss is to learn representations without labels 
 ## 3.2 Deep network
 The deep network is used for feature extraction. This framework is derived from an Inception architecture initialized with ImageNet pre-trained weights. The architecture is up until the "Mixed-5D" layer followed by two 2 convolutional layers, a spatial softmax layer and a fully connected layer. 
 
-## 3. Results
+## 4. Results
 For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. /
 We compare our results against the pre-trained Inception-ImageNet model [[4]](#4). We use the 2048D output vector of the last layer before the classifier as a baseline. 
 
-### 3.1 Final result overview
+### 4.1 Final result overview
 Model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training epochs. Between 1 to 800 epochs, the optimizer was the SGD and between 800 to 4200 epochs, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 epochs, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos (fake pouring videos were not used). Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 epochs and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Figure 1. The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
 
 <p align="center">
@@ -89,7 +89,7 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 
 
 
-### 3.2 Reproduced figure/ table
+### 4.2 Reproduced figure/ table
 | Method  | Alignment Accuracy (kNN)  | Alignment Accuracy (l2, tor = 1) | Training iteration |
 | :------------                  |:---------------:|:---------------:| -----:|
 | Baseline                       | 70.2%*           | 71.0%           | -     |
@@ -100,10 +100,10 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 | Single-view TCN (literature) [1]| 74.2% *         |    -            |266k   |
 
 
-## 4. Discussion and Limitations
+## 5. Discussion and Limitations
 
-### 4.1 Discussion
-### 4.2 Limitations
+### 5.1 Discussion
+### 5.2 Limitations
 
 ## References
 <a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]() \
