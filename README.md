@@ -1,5 +1,5 @@
 # Reproducing *Time-Contrastive Networks: Self-Supervised Learning from Video*
-**Authors:** Max Waterhout (5384907), Amos Yususf (4361504), Tingyu Zhang ()
+**Authors:** Max Waterhout (5384907), Amos Yususf (4361504), Tingyu Zhang (5478413)
 ***
 In this blog post, we present the results of our attempted replication and study of the 2018 paper by Pierre Sermanet et al. 
 *Time-Contrastive Networks: Self-Supervised Learning from Video* [[1]](#1). This work is part of the CS4245 Seminar Computer Vision
@@ -90,16 +90,20 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 
 
 ### 3.2 Reproduced figure/ table
+| Method  | Alignment Accuracy (kNN)  | Alignment Accuracy (l2, tor = 1) | Training iteration |
+| :------------                  |:---------------:|:---------------:| -----:|
+| Baseline                       | 70.2%*           | 71.0%           | -     |
+| Random                         |      71.9% *     | -               |      -|
+| Single-view TCN (max acc)      | -               |    80.1%        | 7.2k  |
+| Single-view TCN (min loss )    | -               |    75.0%        | 11781k  |
+| Single-view TCN (max itr)      | -               |    76.1%        | 13k   |
+| Single-view TCN (literature) [1]| 74.2% *         |    -            |266k   |
 
 
 ## 4. Discussion and Limitations
 
 ### 4.1 Discussion
-
 ### 4.2 Limitations
-In our implementation the main limitation is computing power, the authors of this paper performed in the region of 200k-300k iterations, whereas for this reproducibility project we were only capable of 13K iterations. In addition this was performe on the Google Cloud Platform, but running the identical number of iterations was infeasible. 
-The exact preprocessing steps performed by the authors were not specified in the paper. We assumed the same preprocessing steps from the Inceptionnet (i.e: Normalization). The input dimensions were acquired from the README in the repository provided by the authors repository, this causes a wild goose chase and many errors in implementation. 
-
 
 ## References
 <a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]() \
