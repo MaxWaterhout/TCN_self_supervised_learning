@@ -23,6 +23,7 @@ Imitation learning has already been used for learning robotic skills from demons
 
 ## 3. Implementation
 For our implementation of the TCN we only use the data of the single-view data. The input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (40 frames) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [1].  
+1. one line for preprocessing 
 
 <p align="center">
 <img src="images/single view TCN.png" width="360" height="261" alt="single view TCN"> </br>
@@ -95,15 +96,26 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 | Baseline                       | 70.2%*           | 71.0%           | -     |
 | Random                         |      71.9% *     | -               |      -|
 | Single-view TCN (max acc)      | -               |    80.1%        | 7.2k  |
-| Single-view TCN (min loss )    | -               |    75.0%        | 11781k  |
+| Single-view TCN (min loss )    | -               |    75.0%        | 11781  |
 | Single-view TCN (max itr)      | -               |    76.1%        | 13k   |
 | Single-view TCN (literature) [1]| 74.2% *         |    -            |266k   |
+1. literature paper
+2. Our results
+3. results: network learns from the tripletloss. 
 
 
 ## 5. Discussion and Limitations
 
 ### 5.1 Discussion
+1. Overal performance on our results
+2. reEmphasis on what we did: evaluation scheme l2. 
+3. future: add multiview dataset. Evaluate network on imitation tasks 
 ### 5.2 Limitations
+1. preprocessing unknow. (normalization and reshape size). sol: Inception net for normalization. readme for reshape
+2. computing power limits and cost (google cloud)
+3. code from author was expired
+
+
 
 ## References
 <a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]() \
