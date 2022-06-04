@@ -31,8 +31,8 @@ For our implementation of the TCN we only use the data of the single-view data. 
 </p>
 The TCN network contains the Inception net V3 until the 5d-layer []. Then, we follow the reference paper by adding two convolution layers, one spatial solftmax layer and one FC layer to output the embedding vector. Note that the spatial solftmax layer outputs the x and y cordinates of the maximum element multiplies that element from each layer.
 <p align="center">
-<img src="images/single view TCN.png" width="360" height="261" alt="Spatial Softmanx"> </br>
-<em>Fig. 1: Spatial Softmax</em>
+<img src="images/ss.png" width="360" height="261" alt="Spatial Softmanx"> </br>
+<em>Fig. 2: Spatial Softmax</em>
 </p>
 
 ### 3.1 Training
