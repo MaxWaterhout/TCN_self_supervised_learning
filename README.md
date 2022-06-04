@@ -23,11 +23,16 @@ Imitation learning has already been used for learning robotic skills from demons
 
 ## 3. Implementation
 For our implementation of the TCN we only use the data of the single-view data. The orignal single-view data set contains total of 21 water pouring videos where four of them are fake pouring behaviours. No liquids are poured  from these four videos and we did not include the fake pouring videos for either training or testing. The preprocessing stage includes video frame resizing and frame normalization.We first resize the original frame from 1080 x 1920 to 360 x 640. The mean and standard deviation values for normalization are found from  the pytorch Inception net V3. We than concatenate all training videos together. Hence, the input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (~40 frames for each video) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [1].  
-1. one line for preprocessing 
+
 
 <p align="center">
 <img src="images/single view TCN.png" width="360" height="261" alt="single view TCN"> </br>
 <em>Fig. 1: The single-view TCN</em>
+</p>
+The TCN network contains the Inception net V3 until the 5d-layer []. Then, we follow the reference paper by adding two convolution layers, one spatial solftmax layer and one FC layer to output the embedding vector. Note that the spatial solftmax layer outputs the x and y cordinates of the maximum element multiplies that element from each layer.
+<p align="center">
+<img src="images/single view TCN.png" width="360" height="261" alt="Spatial Softmanx"> </br>
+<em>Fig. 1: Spatial Softmax</em>
 </p>
 
 ### 3.1 Training
