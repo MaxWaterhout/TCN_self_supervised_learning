@@ -9,7 +9,7 @@ by Deep Learning course 2021/2022 at TU Delft. This whole reproduction is done f
 ***
 
 ## 1. Introduction
-In the computer vision domain, deep neural networks have been successful on a big range of tasks where labels can easily be specified by humans, like object detection and segmentation. A bigger challenge lies in applications that are difficult to label, like in the robotics domain. An example would be labeling a pouring task. How can a robot understand what important properties are while neglecting setting changes? Ideally, a robot in the real world can learn a pouring task purely from observation and understanding how to imitate this behavior directly. In this reproduction, we train a network on a pouring task that tries to learn the important features like the pose and the amount of liquid in the cup while being viewpoint and setting invariant. This pouring task is learned through the use of supervised learning and representation learning. In the following, we will provide a motivation for this paper, our implementation of the model, the results that we achieved against the benchmarks and lastly we discuss the limitations of our implementation. 
+In the computer vision domain, deep neural networks have been successful on a big range of tasks where labels can easily be specified by humans, like object detection and segmentation. A bigger challenge lies in applications that are difficult to label, like in the robotics domain. An example would be labeling a pouring task. How can a robot understand what important properties are while neglecting setting changes? Ideally, a robot in the real world can learn a pouring task purely from observation and understanding how to imitate this behavior directly. In this reproduction, we train a network on a pouring task that tries to learn the important features like the pose and the amount of liquid in the cup while being viewpoint and setting invariant. This pouring task is learned through the use of self-supervised learning and representation learning. In the following, we will provide a motivation for this paper, our implementation of the model, the results that we achieved against the benchmarks and lastly we discuss the limitations of our implementation. 
 
 <p align="center">
 <img src="images/pouring_002.gif" width="500" height="300"/> </br>
@@ -22,7 +22,7 @@ Imitation learning has already been used for learning robotic skills from demons
 
 
 ## 3. Implementation
-For our implementation of the TCN we only use the data of the single-view data. The input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (40 frames) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [1].  
+For our implementation of the TCN we only use the data of the single-view data. The orignal single-view data set contains total of 21 water pouring videos where four of them are fake pouring behaviours. No liquids are poured  from these four videos and we did not include the fake pouring videos for either training or testing. The preprocessing stage includes video frame resizing and frame normalization.We first resize the original frame from 1080 x 1920 to 360 x 640. The mean and standard deviation values for normalization are found from  the pytorch Inception net V3. We than concatenate all training videos together. Hence, the input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (~40 frames for each video) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [1].  
 1. one line for preprocessing 
 
 <p align="center">
@@ -31,7 +31,8 @@ For our implementation of the TCN we only use the data of the single-view data. 
 </p>
 
 ### 3.1 Training
-The loss is calculated with a triplet loss [[3]](#3). The formula and an illustration can be seen in fig [2]. This loss is calculated with an anchor, positive and negative frame. For every frame in a sequence, The TCN encourages the anchor and positive to be close in embedding space while distancing itself from the negative frame. This way the network learns what is common between the anchor and positive frame and different from the negative frame. In our case the negative margin range is 0.2 seconds (one frame) and negatives always come from the same sequence as the positive. \
+The loss is calculated with a triplet loss [[3]](#3). The formula and an illustration can be seen in fig [2]. This loss is calculated with an anchor, positive and negative frame. For every frame in a sequence, The TCN encourages the anchor and positive to be close in embedding space while distancing itself from the negative frame. This way the 
+learns what is common between the anchor and positive frame and different from the negative frame. In our case the negative margin range is 0.2 seconds (one frame) and negatives always come from the same sequence as the positive. \
 
 
 <p align="center">
