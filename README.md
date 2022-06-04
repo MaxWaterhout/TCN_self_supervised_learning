@@ -29,11 +29,7 @@ For our implementation of the TCN we only use the data of the single-view data. 
 <img src="images/single view TCN.png" width="360" height="261" alt="single view TCN"> </br>
 <em>Fig. 1: The single-view TCN</em>
 </p>
-The TCN network contains the Inception net V3 until the 5d-layer []. Then, we follow the reference paper by adding two convolution layers, one spatial solftmax layer and one FC layer to output the embedding vector. Note that the spatial solftmax layer outputs the x and y cordinates of the maximum element multiplies that element from each layer.
-<p align="center">
-<img src="images/SS.png" width="360" height="160" alt="Spatial Softmanx"> </br>
-<em>Fig. 2: Spatial Softmax</em>
-</p>
+
 
 ### 3.1 Training
 The loss is calculated with a triplet loss [[3]](#3). The formula and an illustration can be seen in fig [2]. This loss is calculated with an anchor, positive and negative frame. For every frame in a sequence, The TCN encourages the anchor and positive to be close in embedding space while distancing itself from the negative frame. This way the 
@@ -52,12 +48,16 @@ learns what is common between the anchor and positive frame and different from t
 The main purpose of the triplet loss is to learn representations without labels and simultaneously learn meaningful features like pose while being invariant to viewpoint,scale occlusion, background etc.. \ 
 
 ## 3.2 Deep network
-The deep network is used for feature extraction. This framework is derived from an Inception architecture initialized with ImageNet pre-trained weights. The architecture is up until the "Mixed-5D" layer followed by two 2 convolutional layers, a spatial softmax layer and a fully connected layer. 
-1. how we implement from the reference paper about these two conv blocks.
+The deep network is used for feature extraction. This framework is derived from an Inception architecture initialized with ImageNet pre-trained weights. The architecture is up until the "Mixed-5D" layer followed by two 2 convolutional layers, a spatial softmax layer and a fully connected layer. Note that the spatial solftmax layer outputs the x and y cordinates of the maximum element multiplies that element from each layer.
+<p align="center">
+<img src="images/SS.png" width="360" height="160" alt="Spatial Softmanx"> </br>
+<em>Fig. 2: Spatial Softmax</em>
+</p>
+Sine our reference paper did not give the convolution kernel size, we followed [https://arxiv.org/pdf/1504.00702.pdf], and used 5x5 Conv + ReLu.
 
 ## 4. Results
-For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. /
-We compare our results against the pre-trained Inception-ImageNet model [[4]](#4). We use the 2048D output vector of the last layer before the classifier as a baseline. 
+For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. The tolerence value in the evaluation function will further increase the positive range.
+We compare our results against the pre-trained Inception-ImageNet model [[4]](#4). We use the 2048D output vector of the last layer before the classifier net as a baseline. Same baseline was used in our reference paper. 
 
 ### 4.1 Final result overview
 Model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training epochs. Between 1 to 800 epochs, the optimizer was the SGD and between 800 to 4200 epochs, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 epochs, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos (fake pouring videos were not used). Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 epochs and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Figure 1. The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
@@ -106,6 +106,8 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 | Single-view TCN (min loss )    | -               |    75.0%        | 11781  |
 | Single-view TCN (max itr)      | -               |    76.1%        | 13k   |
 | Single-view TCN (literature) [1]| 74.2% *         |    -            |266k   |
+
+In the Table above, data with * are from the reference paper. 
 1. literature paper
 2. Our results
 3. results: network learns from the tripletloss. 
