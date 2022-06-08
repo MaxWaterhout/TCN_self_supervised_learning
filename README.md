@@ -53,7 +53,7 @@ The deep network is used for feature extraction. This framework is derived from 
 <img src="images/SS.png" width="360" height="160" alt="Spatial Softmanx"> </br>
 <em>Fig. 2: Spatial Softmax</em>
 </p>
-Sine our reference paper did not give the convolution kernel size, we followed [[5]](#5), and used 5x5 Conv + ReLu.
+Sine our reference paper did not give the convolution kernel size, we followed [[5]](#5)., and used 5x5 Conv + ReLu.
 
 ## 4. Results
 For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. The tolerence value in the evaluation function will further increase the positive range.
@@ -135,7 +135,7 @@ CVPR, 2009.\
 <a id="4">[5] </a> C. Finn, X. Y. Tan, Y. Duan, T. Darrell, S. Levine, and
 P. Abbeel. Learning visual feature spaces for robotic
 manipulation with deep spatial autoencoders. CoRR,
-abs/1509.06113, 2015.
+abs/1509.06113, 2015.\
 
 
 
