@@ -53,7 +53,7 @@ The deep network is used for feature extraction. This framework is derived from 
 <img src="images/SS.png" width="360" height="160" alt="Spatial Softmanx"> </br>
 <em>Fig. 2: Spatial Softmax</em>
 </p>
-Sine our reference paper did not give the convolution kernel size, we followed [https://arxiv.org/pdf/1504.00702.pdf], and used 5x5 Conv + ReLu.
+Sine our reference paper did not give the convolution kernel size, we followed [[5]](#5), and used 5x5 Conv + ReLu.
 
 ## 4. Results
 For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. The tolerence value in the evaluation function will further increase the positive range.
@@ -107,7 +107,7 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 | Single-view TCN (max itr)      | -               |    76.1%        | 13k   |
 | Single-view TCN (literature) [1]| 74.2% *         |    -            |266k   |
 
-In the Table above, data with * are from the reference paper and the k neareast neighbour scheme was used for accuracy measurement. Our alighnment accuracy was measured from l2 distance since we did not train any classifier. The two accuracy measurements give the similar score for Baseline model, 70.2% and 71% percent. Although our training iteration was limited by the hardware, the increment on the accuracy matches with historical data which means that the model did learn the water pouring representation from the triplet loss. We contribute our higher accuracy results to the small sample size because the reference model was trained on multi-view data set where as we only trained the model for single view dataset. 
+In the Table above, data with * are from the reference paper[[1]](#1) and the k neareast neighbour scheme was used for accuracy measurement. Our alighnment accuracy was measured from l2 distance since we did not train any classifier. The two accuracy measurements give the similar score for Baseline model, 70.2% and 71% percent. Although our training iteration was limited by the hardware, the increment on the accuracy matches with historical data which means that the model did learn the water pouring representation from the triplet loss. We contribute our higher accuracy results to the small sample size because the reference model was trained on multi-view data set where as we only trained the model for single view dataset. 
 
 
 ## 5. Discussion and Limitations
@@ -131,7 +131,13 @@ ICRA, 2002.\
 <a id="3">[3] </a> X. Wang and A. Gupta. Unsupervised learning of visual
 representations using videos. CoRR, abs/1505.00687, 2015.\
 <a id="4">[4] </a> J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei. ImageNet: A Large-Scale Hierarchical Image Database. In
-CVPR, 2009.
+CVPR, 2009.\
+<a id="4">[5] </a> C. Finn, X. Y. Tan, Y. Duan, T. Darrell, S. Levine, and
+P. Abbeel. Learning visual feature spaces for robotic
+manipulation with deep spatial autoencoders. CoRR,
+abs/1509.06113, 2015.
+
+
 
 
 
