@@ -107,7 +107,7 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 | Single-view TCN (max itr)      | -               |    76.1%        | 13k   |
 | Single-view TCN (literature) [1]| 74.2% *         |    -            |266k   |
 
-In the Table above, data with * are from the reference paper. Although our training iteration was limited by the hardware, the increment on the accuracy matches with historical data which means that the model did learn the water pouring representation from the triplet loss. We contribute our higher accuracy results to the small sample size because the reference model was trained on multi-view data set where as we only trained the model for single view dataset. 
+In the Table above, data with * are from the reference paper and the k neareast neighbour scheme was used for accuracy measurement. Our alighnment accuracy was measured from l2 distance since we did not train any classifier. The two accuracy measurements give the similar score for Baseline model, 70.2% and 71% percent. Although our training iteration was limited by the hardware, the increment on the accuracy matches with historical data which means that the model did learn the water pouring representation from the triplet loss. We contribute our higher accuracy results to the small sample size because the reference model was trained on multi-view data set where as we only trained the model for single view dataset. 
 
 
 ## 5. Discussion and Limitations
