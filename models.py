@@ -25,7 +25,7 @@ class Convblock(nn.Module):
 
     def forward(self, x):
         # reshape
-        x = x.view(-1,288,35,35)
+        x = x.view(-1,288,42,77) # x.view(-1,288,35,35) for 299 x 299 else 360 x 640
         x = self.conv1(x)
         # Activation function
         x = self.relu1(x)
@@ -59,8 +59,6 @@ class SpatialSoftmax(torch.nn.Module):
         self.linear =nn.Linear(32, 32)
 
     def forward(self, feature):
-
-        #feature = feature.view(-1,16,self.height*self.width)
         feature = feature.view(-1,self.height*self.width)
 
         softmax_attention = nn.functional.softmax(feature/self.temperature, dim=-1)
@@ -74,7 +72,7 @@ class SpatialSoftmax(torch.nn.Module):
 
 # TCNmodel
 class TCNmodel(nn.Module):
-  # input tensor: N x 3 x 299 x 299 
+  # input tensor: N x 3 x H(>=299) x W(>=299) 
   # output tensor: N x 32
 
 
@@ -82,7 +80,7 @@ class TCNmodel(nn.Module):
         super(TCNmodel, self).__init__()
         self.model = torch.hub.load('pytorch/vision:v0.10.0', 'inception_v3', pretrained=True)
         self.conv2 = Convblock(288,32,16)
-        self.spmax = SpatialSoftmax(27,27,16,temperature=None)
+        self.spmax = SpatialSoftmax(34,69,16,temperature=None) #SpatialSoftmax(27,27,16,temperature=None) for 299 x 299 else for 360 x 640
 
     def forward(self, x):
         x = self.model.Conv2d_1a_3x3(x)
@@ -102,38 +100,38 @@ class TCNmodel(nn.Module):
 
         return x
 
-# testing model
-#model = TCNmodel()
+class Baselinemodel(nn.Module):
+  # input tensor: N x 3 x H(>=299) x W(>=299) 
+  # output tensor: N x 32
 
-# import urllib
-# url, filename = ("https://github.com/pytorch/hub/raw/master/images/dog.jpg", "dog.jpg")
-# try: urllib.URLopener().retrieve(url, filename)
-# except: urllib.request.urlretrieve(url, filename)
 
-# # sample execution (requires torchvision)
-# from PIL import Image
-# from torchvision import transforms
-# input_image = Image.open(filename)
-# preprocess = transforms.Compose([
-#     transforms.Resize(299),
-#     transforms.CenterCrop(299),
-#     transforms.ToTensor(),
-#     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-# ])
-# print(input_image.size)
+    def __init__(self):
+        super(Baselinemodel, self).__init__()
+        self.model = torch.hub.load('pytorch/vision:v0.10.0', 'inception_v3', pretrained=True)
 
-# input_tensor = preprocess(input_image)
-# input_batch = input_tensor.unsqueeze(0) # create a mini-batch as expected by the model
-# print(input_batch.shape)
-# input_batch=torch.cat(10*[input_batch])
-# print(input_batch.shape)
-# #input_batch = torch.cat((input_batch,input_batch),dim=0)
-# # move the input and model to GPU for speed if available
-# if torch.cuda.is_available():
-#     input_batch = input_batch.to('cuda')
-#     model.to('cuda')
+    def forward(self, x):
+        x = self.model.Conv2d_1a_3x3(x)
+        x = self.model.Conv2d_2a_3x3(x)
+        x = self.model.Conv2d_2b_3x3(x)
+        x = self.model.maxpool1(x)
 
-# with torch.no_grad():
-#   output = model(input_batch)
-# # Tensor of shape 1000, with confidence scores over Imagenet's 1000 classes
-# print(output.shape)
+        x = self.model.Conv2d_3b_1x1(x)
+        x = self.model.Conv2d_4a_3x3(x)
+        x = self.model.maxpool2(x)
+        x = self.model.Mixed_5b(x)
+        x = self.model.Mixed_5c(x)
+        x = self.model.Mixed_5d(x)
+        x = self.model.Mixed_6a(x)
+        x = self.model.Mixed_6b(x)
+        x = self.model.Mixed_6c(x)
+        x = self.model.Mixed_6d(x)
+        x = self.model.Mixed_6e(x)
+        x = self.model.Mixed_7a(x)
+        x = self.model.Mixed_7b(x)
+        x = self.model.Mixed_7c(x)
+        x = self.model.avgpool(x)
+        x = self.model.dropout(x)
+        x = torch.flatten(x, 1)
+
+        
+        return x
