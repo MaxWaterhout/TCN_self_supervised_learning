@@ -109,13 +109,9 @@ In the table above, data with * is from the original paper[1] and the k-neareast
 ## 5. Discussion and Limitations
 
 ### 5.1 Discussion
-1. Overal performance on our results
-2. reEmphasis on what we did: evaluation scheme l2. 
-3. future: add multiview dataset. Evaluate network on imitation tasks 
+We have successfullly been able to reproduce the TCN model on the single-view dataset. The performance of our model is consistent with the results found in the original paper. We used our own evaluation scheme, namely L2, because we believe the evaluation should be similar to triplet loss and we did not train on the multi-view dataset. In future extensions of this reproduction we would advise to train the model on this multi-view dataset as well as reproduce the downstream tasks. 
 ### 5.2 Limitations
-1. preprocessing unknow. (normalization and reshape size). sol: Inception net for normalization. readme for reshape
-2. computing power limits and cost (google cloud)
-3. code from author was expired
+There are a number of limitations for this work, predominantely coming from information that is not explicitly stated in the original paper. Firstly, the code provided by the authors was expired long before the start of this project. Essentially there was a lack of implementation details. Secondly, the preprocessing steps taken for the training data is unknown. For example the mean and standard deviation (STD) for normalization of their model is not provided. Therefore we implemented the identical normalization used for the InceptionV3. In addition the input size was also not provided in the paper, but hidden in the README of the datasets acquired by contacting the authors. Finally, the biggest challenge in our implementation was lack of computing power and/or the financial cost (Google Cloud).
 
 
 
