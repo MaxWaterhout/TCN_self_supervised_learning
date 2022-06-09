@@ -1,15 +1,13 @@
 # Reproducing *Time-Contrastive Networks: Self-Supervised Learning from Video*
 **Authors:** Max Waterhout (5384907), Amos Yususf (4361504), Tingyu Zhang (5478413)
 ***
-In this blog post, we present the results of our attempted replication and study of the 2018 paper by Pierre Sermanet et al. 
-*Time-Contrastive Networks: Self-Supervised Learning from Video* [[1]](#1). This work is part of the CS4245 Seminar Computer Vision
-by Deep Learning course 2021/2022 at TU Delft. This whole reproduction is done from scratch and can be found in our github: https://github.com/maxiew123/TCN_self_supervised_learning/tree/main
+In this blog post, we present the results of our attempted replication and study of the 2018 paper by Pierre Sermanet et al. *Time-Contrastive Networks: Self-Supervised Learning from Video [[1]](#1)*. This work is part of the CS4245 Seminar Computer Vision by Deep Learning course 2021/2022 at TU Delft. This whole reproduction is done from scratch and can be found in our github: https://github.com/maxiew123/TCN_self_supervised_learning/tree/main. The dataset can be found by contacting the authors of the original paper.
 
 ***
 ***
 
 ## 1. Introduction
-In the computer vision domain, deep neural networks have been successful on a big range of tasks where labels can easily be specified by humans, like object detection and segmentation. A bigger challenge lies in applications that are difficult to label, like in the robotics domain. An example would be labeling a pouring task. How can a robot understand what important properties are while neglecting setting changes? Ideally, a robot in the real world can learn a pouring task purely from observation and understanding how to imitate this behavior directly. In this reproduction, we train a network on a pouring task that tries to learn the important features like the pose and the amount of liquid in the cup while being viewpoint and setting invariant. This pouring task is learned through the use of self-supervised learning and representation learning. In the following, we will provide a motivation for this paper, our implementation of the model, the results that we achieved against the benchmarks and lastly we discuss the limitations of our implementation. 
+In the computer vision domain, deep neural networks have been successful on a big range of tasks where labels can easily be specified by humans, like object detection and segmentation. A bigger challenge lies in applications that are difficult to label, like in the robotics domain. An example would be labeling a pouring task. How can a robot understand what important properties are, while neglecting setting changes? Ideally, a robot in the real world can learn a pouring task purely from observation and understanding how to imitate this behavior directly. In this reproduction, we train a network on a pouring task that tries to learn the important features like the pose and the amount of liquid in the cup while being viewpoint and setting invariant. This pouring task is learned through the use of supervised learning and representation learning. In the following, we will provide a motivation for this paper, our implementation of the model, the results that we reproduced compared to the performace of the original paper and lastly we discuss the limitations of our implementation.
 
 <p align="center">
 <img src="images/pouring_002.gif" width="500" height="300"/> </br>
