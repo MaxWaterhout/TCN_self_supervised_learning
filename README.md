@@ -39,7 +39,7 @@ The loss is calculated with a triplet loss [[3]](#3). The formula and an illustr
 
 <p align="center">
 <img src="images/triplet_loss.png" width="600" height="161" alt="Training loss"> </br>
-<em>Fig. 2: The triplet loss</em>
+<em>Fig. 3: The triplet loss</em>
 </p>
 
 The main purpose of the triplet loss in this task is to learn representations without labels and simultaneously learn meaningful features like pose, while being invariant to viewpoint, scale occlusion, background etc..
@@ -49,32 +49,32 @@ The deep network is used for feature extraction. This framework is derived from 
 
 <p align="center">
 <img src="images/SS.png" width="360" height="160" alt="Spatial Softmanx"> </br>
-<em>Fig. 2: Spatial Softmax</em>
+<em>Fig. 4: Spatial Softmax</em>
 </p>
 
 ## 4. Results
 For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine similarity. Note that the distance measurements were calculated on the embedding space. The metric matches the nearest neighbors with each other. In addition, we manually labelled the first frame. In this way, for each frame the most semantically similar frame is returned sequentially. We state that a true positive is when a frame lies in the positive range from the anchor. This way the frame sequence: (1,2) gives the same accuracy as (2,1). We compare our results against the pre-trained Inception-ImageNet model [[4]](#4). We use the 2048D output vector of the last layer before the classifier as a baseline. The same baseline is used in the original paper.
 
 ### 4.1 Final result overview
-Model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training epochs. Between 1 to 800 epochs, the optimizer was the SGD and between 800 to 4200 epochs, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 epochs, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos (fake pouring videos were not used). Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 epochs and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Figure 1. The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
+The model is trained on the Google Cloud with one P100 GPU. The optimizers we used are SGD, SGD with momentum, and Adam at different training iterations. Between 1 to 800 iterations, we used SGD, between 800 to 4200 iterations, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 iterations, we used Adam as the optimizer for the same reason. During testing 6 video sequences were used, because there was no validation set to select the best training model. We only saved models for every 200 iterations and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Fig [5]. The zigzaging behaviour is due to the saving option every 200 iterations. Furthermore the missing data betweening 2000 to 6000 iterations was caused by a virtual machine crash. 
 
 <p align="center">
 <img src="images/tain loss.png" width="360" height="261" alt="Training loss"> </br>
-<em>Fig. 3: The training loss</em>
+<em>Fig. 5: The training loss</em>
 </p>
 
 
 
 <p align="center">
 <img src="./images/accuracy.png" width="360" height="261" alt="Figure 1 paper"> </br>
-<em>Fig. 4: The testing accuracy</em>
+<em>Fig. 5: The testing accuracy</em>
 </p>
-The alignment accuracy from each saved network model for the testing set is ploted in figure 2. Various criterion were used to measure the similarity between two embedded frames, such as consine similarity and euclidean distance (l2). We paid more focus on the l2 distance with one frame tolerence because this setup is closely related to the training procedure.  
-The best accuracy measured by that criteria is from the model at the 7200th iteration. The average alignment accuracy is 80.11 percent whereas the Baseline method has an average accuracy of 71.04 percent. 
+The alignment accuracy from each saved model for the testing set can also be seen in Fig [5]. Various criterion were used to measure the similarity between two embedded frames, such as cosine similarity and euclidean distance (L2). We paid more attension to the L2 distance with one frame tolerence because this setup is identical to the training procedure.
+The best accuracy measured with this criteria is from the model at the 7200th iteration. The average alignment accuracy is 80.11%. Whereas the baseline method has an average accuracy of 71.04%. In fig [6] we visualize our results from various methods used.
 
 <p align="center">
 <img src="./images/everything.gif" width="360" height="261"> </br>
-<em>Fig. 5: Overview</em>
+<em>Fig. 6: Overview</em>
 </p>
 
 
@@ -103,7 +103,7 @@ https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-
 | Single-view TCN (max itr)      | -               |    76.1%        | 13k   |
 | Single-view TCN (literature) [1]| 74.2% *         |    -            |266k   |
 
-In the Table above, data with * are from the reference paper[[1]](#1) and the k neareast neighbour scheme was used for accuracy measurement. Our alighnment accuracy was measured from l2 distance since we did not train any classifier. The two accuracy measurements give the similar score for Baseline model, 70.2% and 71% percent. Although our training iteration was limited by the hardware, the increment on the accuracy matches with historical data which means that the model did learn the water pouring representation from the triplet loss. We contribute our higher accuracy results to the small sample size because the reference model was trained on multi-view data set where as we only trained the model for single view dataset. 
+In the table above, data with * is from the original paper[1] and the k-neareast neighbour scheme was used for accuracy measurement. However alignment accuracy was measured from L2 distance, since we did not train any classifier for the k-nearest neighbour test. The two accuracy measurements give similar scores for the baseline model namely:70.2% and 71%. Although our training iteration was limited by the hardware, the increment on the accuracy matches with historical data, which means that the model did learn the water pouring representation using the triplet loss. We contribute our higher accuracy results to the small sample size, because the original model was trained on the multi-view dataset. Whereas we only trained the model on the single view dataset.
 
 
 ## 5. Discussion and Limitations
